@@ -1,51 +1,73 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
-bool isPrime(int num)
+int countNonZero(int matrix[][100], int n)
 {
-    if (num <= 1)
-        return false;
-    if (num <= 3)
-        return true;
-    if (num % 2 == 0 || num % 3 == 0)
-        return false;
-    for (int i = 5; i * i <= num; i += 6)
-    {
-        if (num % i == 0 || num % (i + 2) == 0)
-            return false;
-    }
-    return true;
-}
-void sumOfPrimeElements(int *arr, int n, int *sum)
-{
-    *sum = 0;
+    int count = 0;
     for (int i = 0; i < n; i++)
     {
-        if (isPrime(arr[i]))
+        for (int j = 0; j < n; j++)
         {
-            *sum += arr[i];
+            if (matrix[i][j] != 0)
+            {
+                count++;
+            }
         }
+    }
+    return count;
+}
+void upperTriangular(int matrix[][100], int n)
+{
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            if (j < i)
+            {
+                printf("0 ");
+            }
+            else
+            {
+                printf("%d ", matrix[i][j]);
+            }
+        }
+        printf("\n");
+    }
+}
+void diagonalElements(int matrix[][100], int n)
+{
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            if (j == i - 1 || j == i + 1)
+            {
+                printf("%d ", matrix[i][j]);
+            }
+            else
+            {
+                printf("  ");
+            }
+        }
+        printf("\n");
     }
 }
 int main()
 {
     int n;
-    printf("Enter the number of elements: ");
+    printf("Enter the size of the square matrix: ");
     scanf("%d", &n);
-    int *arr = (int *)malloc(n * sizeof(int));
-    if (arr == NULL)
-    {
-        printf("Memory allocation failed.\n");
-        return 1;
-    }
-    printf("Enter %d elements:\n", n);
+    int matrix[100][100];
+    printf("Enter the elements of the matrix:\n");
     for (int i = 0; i < n; i++)
     {
-        scanf("%d", &arr[i]);
+        for (int j = 0; j < n; j++)
+        {
+            scanf("%d", &matrix[i][j]);
+        }
     }
-    int sum;
-    sumOfPrimeElements(arr, n, &sum);
-    printf("Sum of prime elements: %d\n", sum);
-    free(arr);
+    printf("Number of nonzero elements: %d\n", countNonZero(matrix, n));
+    printf("Upper triangular matrix:\n");
+    upperTriangular(matrix, n);
+    printf("Elements above and below the main diagonal:\n");
+    diagonalElements(matrix, n);
     return 0;
 }
